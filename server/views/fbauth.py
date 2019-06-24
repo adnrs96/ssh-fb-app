@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
@@ -54,4 +54,8 @@ def handle_post_login(request: HttpRequest) -> HttpResponse:
 
     user = do_get_create_user(user_id, access_token, profile_data['name'], profile_data['picture']['data']['url'])
     login(request, user)
+    return redirect('/')
+
+def handle_logout(request: HttpRequest) -> HttpResponse:
+    logout(request)
     return redirect('/')

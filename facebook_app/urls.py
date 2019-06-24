@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from server.views.home import handle_home
-from server.views.fbauth import handle_login, handle_post_login
+from server.views.fbauth import handle_login, handle_post_login, handle_logout
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', handle_login),
     path('postlogin/', handle_post_login),
+    path('logout/', handle_logout),
     path('', handle_home),
 ]
 urlpatterns += static('/uploads/', document_root=settings.MEDIA_ROOT)
