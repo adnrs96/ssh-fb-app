@@ -26,10 +26,25 @@ if SECRET_KEY is None:
     logging.error('SECRET_KEY environment variable not set. Please set it before relaunch.')
     sys.exit(1)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
+FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET')
+if FACEBOOK_APP_ID is None or FACEBOOK_APP_SECRET is None:
+    logging.error('Configure facebook app environment variables before launch.')
+    sys.exit(1)
 
-ALLOWED_HOSTS = []
+EXTERNAL_HOST = os.environ.get('EXTERNAL_HOST')
+if EXTERNAL_HOST is None:
+    EXTERNAL_HOST = 'localhost'
+
+ROOT_DOMAIN_URI = 'https://' + EXTERNAL_HOST
+
+PRODUCTION = os.environ.get('PRODUCTION')
+if PRODUCTION is None:
+    logging.info('PRODUCTION environment variable not set. Assuming development environment')
+    DEBUG = True
+    ROOT_DOMAIN_URI = 'http://localhost:8000'
+
+ALLOWED_HOSTS = [EXTERNAL_HOST, 'localhost']
 
 
 # Application definition
