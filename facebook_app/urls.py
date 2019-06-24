@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from server.views.home import handle_home
+from server.views.fbauth import handle_login, handle_post_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', handle_login),
+    path('postlogin/', handle_post_login),
     path('', handle_home),
 ]
