@@ -40,6 +40,18 @@ def handle_post_login(request: HttpRequest) -> HttpResponse:
         logging.error('Could not retrieve access_token. %s' % (user_data.get('error').get('message')))
         return render(request, "error.html")
 
-    user = do_get_create_user(user_data['data']['user_id'], access_token)
+    user_id = user_data['data']['user_id']
+    # Access name and profile pic of the user.
+    user_profile_data_access_uri = 'https://graph.facebook.com/v3.3/%s?fields=name,picture&access_token=%s'
+    res_profile_data_req = requests.get(user_profile_data_access_uri % (
+        user_id,
+        access_token
+    ))
+    profile_data = res_profile_data_req.json()
+    if profile_data.get('error') is not None:
+        logging.error('Could not retrieve profile_data. %s' % (user_data.get('error').get('message')))
+        return render(request, "error.html")
+
+    user = do_get_create_user(user_id, access_token, profile_data['name'], profile_data['picture']['data']['url'])
     login(request, user)
-    return HttpResponse('You Should be logged in now!')
+    return redirect('/')
