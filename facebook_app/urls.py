@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from server.views.home import handle_home
 from server.views.fbauth import handle_login, handle_post_login
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,3 +26,4 @@ urlpatterns = [
     path('postlogin/', handle_post_login),
     path('', handle_home),
 ]
+urlpatterns += static('/uploads/', document_root=settings.MEDIA_ROOT)
