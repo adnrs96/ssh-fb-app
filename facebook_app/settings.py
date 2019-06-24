@@ -71,6 +71,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'facebook_app.urls'
 
+AUTH_USER_MODEL = "server.UserProfile"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
