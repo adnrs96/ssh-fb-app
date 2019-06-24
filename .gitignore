@@ -1,0 +1,4 @@
+# Ignore cache files.
+*.pyc
+db.sqlite3
+secrets.sh
