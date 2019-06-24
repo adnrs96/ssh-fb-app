@@ -1,6 +1,8 @@
+from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
+from server.actions import do_get_create_user
 import requests
 
 def handle_login(request: HttpRequest) -> HttpResponse:
@@ -38,4 +40,6 @@ def handle_post_login(request: HttpRequest) -> HttpResponse:
         logging.error('Could not retrieve access_token. %s' % (user_data.get('error').get('message')))
         return render(request, "error.html")
 
-    return HttpResponse('We will login you shortly!')
+    user = do_get_create_user(user_data['data']['user_id'], access_token)
+    login(request, user)
+    return HttpResponse('You Should be logged in now!')
