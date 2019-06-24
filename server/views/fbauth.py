@@ -27,4 +27,15 @@ def handle_post_login(request: HttpRequest) -> HttpResponse:
         logging.error('Could not retrieve access_token. %s : %s' % (data.get('error'), data.get('error_description')))
         return render(request, "error.html")
 
+    # Inspect access_token to grab a user_id
+    fb_graph_debug_token = 'https://graph.facebook.com/debug_token?input_token=%s&access_token=%s|%s'
+    res_token_inspect_req = requests.get(fb_graph_debug_token % (
+        access_token, settings.FACEBOOK_APP_ID,
+        settings.FACEBOOK_APP_SECRET
+    ))
+    user_data = res_token_inspect_req.json()
+    if user_data.get('error') is not None:
+        logging.error('Could not retrieve access_token. %s' % (user_data.get('error').get('message')))
+        return render(request, "error.html")
+
     return HttpResponse('We will login you shortly!')
